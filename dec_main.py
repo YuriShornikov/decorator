@@ -2,28 +2,27 @@ import datetime
 import os
 
 def logger(old_function):
-
+    arg_list = []
+    kwarg_dict = {}
+    result_list = []
     def new_function(*args, **kwargs):
-        print('work?')
         with open('main.log', 'w+', encoding='utf-8') as file:
             result = old_function(*args, **kwargs)
             time_func = str(datetime.datetime.now())
-            print(time_func)
             file.write(f'{time_func} \n')
-            print('work')
             file.write(f'{old_function.__name__} \n')
-            arg = f'{args} {kwargs}'
-            file.write(f'{arg} \n')
-            file.write(f'{str(result)} \n')
+            arg_list.append(args)
+            kwarg_dict.update(kwargs)
+            for value in kwargs.values():
+                arg_list.append(value)
+            file.write(f'{arg_list} {kwarg_dict} \n')
+            result_list.append(str(result))
+            file.write(f'{result_list} \n')
+            file.close()
             return result
 
-    return new_function
 
-# @logger
-# def test(test):
-#     return test
-#
-# test('2')
+    return new_function
 
 def test_1():
     path = 'main.log'
